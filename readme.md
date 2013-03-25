@@ -2,12 +2,18 @@ ZF2 Mailchimp 1.3 API Wrapper
 ================================
 
 This module is an attempt to create a complete mailchimp API wrapper for Zend Framework 2.0
+At the moment, this is loosely based on https://github.com/waynhall/CodeIgniter-Library-for-MailChimp-API-v1.3
 
 *This is very much a work in progress and functionality will be added as I have time and/or need.
 
 Contributing
 ------------
 If you want to see this module move along faster, please feel free to pick a section, start coding and submit pull requests!
+I'm interested in contributions for
+- Unit Tests
+- Rewriting the actual submit mechanism
+- Add other sections not yet completed
+- Code improvements (I'm still learning, so would appreciate feedback)
 
 Installation
 --------------
