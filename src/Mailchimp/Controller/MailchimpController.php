@@ -14,7 +14,7 @@ class MailchimpController extends AbstractActionController
     public function subscribeAction()
     {
         $mailchimp = $this->getServiceLocator()->get('subscriber');
-        $subscribed = $mailchimp->email('aaron@4mation.com.au')
+        $subscribed = $mailchimp->email('me@here.com')
             ->listId('29bc73c393')
             ->emailType('html')
             ->subscribe();
@@ -29,7 +29,7 @@ class MailchimpController extends AbstractActionController
     public function unsubscribeAction()
     {
         $mailchimp = $this->getServiceLocator()->get('subscriber');
-        $subscribed = $mailchimp->email('aaron@4mation.com.au')
+        $subscribed = $mailchimp->email('me@here.com')
             ->listId('29bc73c393')
             ->unsubscribe();
 
@@ -43,7 +43,7 @@ class MailchimpController extends AbstractActionController
     public function getAction()
     {
         $mailchimp = $this->getServiceLocator()->get('subscriber');
-        $subscriberDetails = $mailchimp->email('aaron@4mation.com.au')
+        $subscriberDetails = $mailchimp->email('me@here.com')
             ->listId('29bc73c393')
             ->get();
 
