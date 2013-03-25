@@ -18,10 +18,14 @@ and run
 ```
 php ./composer.phar update
 ```
-and finally add Mailchimp to your modules list in config/application.php.
+
+Copy mailchimp.local.dist to your /config/autoload folder and rename it to mailchimp.local.php
+You will need to add your API key and configure any global settings in here.
 
 Usage Examples
 ===============
+
+Examples can be found in src/Mailchimp/Controller/MailchimpController.php
 
 Subscribe (Single)
 -------------------
