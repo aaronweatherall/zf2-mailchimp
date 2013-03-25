@@ -1,7 +1,7 @@
 {
     "name": "aaron4m/zf2-mailchimp",
     "description": "A Mailchimp 1.3 API module for Zend Framework 2.0",
-    "keywords": ["mailchimp", "zend-framework", "zf2", ],
+    "keywords": ["mailchimp", "zend-framework", "zf2"],
     "homepage": "https://github.com/aaron4m/zf2-mailchimp",
     "type": "library",
     "license": "New BSD License",
