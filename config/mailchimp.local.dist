@@ -1,0 +1,26 @@
+<?php
+
+return array(
+    'mailchimp' => array(
+        'general' => array(
+            'apiKey' => '',
+            'apiVersion' => '1.3',
+            'timeout' => 300,
+            'chunkSize' => 8192,
+            'defaultDc' => 'us1',
+            'secure' => false,
+        ),
+        'subscribe' => array(
+            'emailType' => 'html',
+            'doubleOptin' => true,
+            'updateExisting' => false,
+            'replaceInterests'=>true,
+            'sendWelcome'=>false,
+        ),
+        'unsubscribe' => array(
+            'deleteMember'=>false,
+            'sendGoodbye'=>true,
+            'sendNotify'=>true,
+        )
+    )
+);
