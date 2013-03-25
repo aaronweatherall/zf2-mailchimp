@@ -5,6 +5,10 @@ This module is an attempt to create a complete mailchimp API wrapper for Zend Fr
 
 *This is very much a work in progress and functionality will be added as I have time and/or need.
 
+Contributing
+------------
+If you want to see this module move along faster, please feel free to pick a section, start coding and submit pull requests!
+
 Installation
 --------------
 Added the following requirement to your projects composer.json file.
