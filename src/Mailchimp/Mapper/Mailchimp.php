@@ -1,7 +1,9 @@
 <?php
 namespace Mailchimp\Mapper;
 
+use Zend\Http\Client;
 use Mailchimp\Mapper\Exception\MailchimpException as MailchimpException;
+
 
 /**
  * Class Logger
@@ -21,6 +23,8 @@ Class Mailchimp implements MailchimpInterface
 
         $params = $this->processParams($params);
 
+        var_dump($params);
+        die();
         $this->errorMessage = "";
         $this->errorCode = "";
 

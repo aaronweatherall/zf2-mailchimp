@@ -89,6 +89,8 @@ class Subscriber extends McAbstractService {
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
 
+        var_dump($this->getConfig('doubleOptin', 'subscribe'));
+
         $params = array();
         $params["id"] = $listEntity->getId();
         $params["emailAddress"] = $entity->getEmailAddress();

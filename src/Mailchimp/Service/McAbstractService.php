@@ -106,9 +106,9 @@ class McAbstractService implements ServiceManagerAwareInterface, EventManagerAwa
         return $this;
     }
 
-    public function getConfig()
+    public function getConfig($configKey, $section = 'general')
     {
-        return $this->config;
+        return $this->getMapper()->getConfig($configKey, $section);
     }
 
 
