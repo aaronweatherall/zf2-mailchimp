@@ -6,6 +6,10 @@ At the moment, this is loosely based on https://github.com/waynhall/CodeIgniter-
 
 *This is very much a work in progress and functionality will be added as I have time and/or need.
 
+Updates
+-------
+12/04/2013 - Major overhaul of service/mapper architecture.
+
 Contributing
 ------------
 If you want to see this module move along faster, please feel free to pick a section, start coding and submit pull requests!
@@ -17,25 +21,23 @@ I'm interested in contributions for
 
 Installation
 --------------
-Added the following requirement to your projects composer.json file.
+1) Add the following requirement to your projects composer.json file.
 
 ```php
 "aaron4m/zf2-mailchimp": "dev-master"
 ```
 
-and run
+2) Open up your command line and run
 
 ```
 php ./composer.phar update
 ```
 
-Copy mailchimp.local.dist to your /config/autoload folder and rename it to mailchimp.local.php
-You will need to add your API key and configure any global settings in here.
+3) Copy vendor/aaron4m/zf2-mailchimp/config/mailchimp.local.php.dist to your /config/autoload folder and rename it to mailchimp.local.php
+4) You *must* add your API key to this file and configure any global settings.
 
 Usage Examples
 ===============
-
-Examples can be found in src/Mailchimp/Controller/MailchimpController.php
 
 Subscribe (Single)
 -------------------
