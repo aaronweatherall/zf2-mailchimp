@@ -6,6 +6,10 @@ At the moment, this is loosely based on https://github.com/waynhall/CodeIgniter-
 
 *This is very much a work in progress and functionality will be added as I have time and/or need.
 
+Updates
+-------
+12/04/2013 - Major overhaul of service/mapper architecture.
+
 Contributing
 ------------
 If you want to see this module move along faster, please feel free to pick a section, start coding and submit pull requests!
