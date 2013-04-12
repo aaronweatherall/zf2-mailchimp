@@ -1,50 +1,43 @@
 <?php
-namespace Mailchimp\Mapper;
 
-use Mailchimp\Mapper\McAbstractMapper;
-use Mailchimp\Mapper\Exception\MailchimpException as MailchimpException;
+namespace Mailchimp\Service;
 
-/**
- * Class Logger
- *
- * @package Logger\Mapper
- */
-Class Subscriber extends McAbstractMapper
-{
-    /**
-     * @var bool
-     */
-    protected $initialised = false;
+use Mailchimp\Service\McAbstractService;
 
-    /**
-     * @var
-     */
-    protected $entity;
-    /**
-     * @var
-     */
-    protected $hydrator;
-    /**
-     * @var
-     */
-    protected $defaults;
 
-    /**
-     * @var
-     */
-    protected $errorMessage;
-    /**
-     * @var
-     */
-    protected $errorCode;
+class Subscriber extends McAbstractService {
 
-    /**
-     * @var array
-     */
+    protected $subscriberEntity;
+    protected $mailingListEntity;
+
     protected $arrayMap = array(
         'email' => 'email',
         'merges' => 'mergeVars'
     );
+
+    /**
+     * @return array|bool|mixed
+     */
+    public function update()
+    {
+        $entity = $this->getSubscriberEntity();
+        $listEntity = $this->getMailingListEntity();
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
+
+        $params = array();
+        $params["id"] = $id;
+        $params["email_address"] = $entity->getEmailAddress();;
+        $params["merge_vars"] = $entity->getMergeVars();;
+        $params["email_type"] = $entity->getEmailType();;
+        $params["replace_interests"] = $this->getConfig('replaceInterests', 'update');
+
+        if ($this->getMapper()->callServer("listUpdateMember", $params) ) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * @param bool $returnEntity
@@ -55,20 +48,24 @@ Class Subscriber extends McAbstractMapper
         $entity = $this->getSubscriberEntity();
         $listEntity = $this->getMailingListEntity();
 
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
+
         $params = array();
         $params["id"] = $listEntity->getId();
         $params["emailAddress"] = $entity->getEmailAddress();
 
-        $data = $this->callServer("listMemberInfo", $params);
+        $data = $this->getMapper()->callServer("listMemberInfo", $params);
         $cleanData = $this->remap($data['data'][0]);
 
-        $hydrator = $this->getHydrator();
+        $hydrator = $this->$this->getMapper()->getHydrator();
 
         if (! is_object($cleanData)) {
             $entity = $hydrator->hydrate($cleanData, $this->getSubscriberEntity());
         } else {
             $entity = $data;
         }
+
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('entity' => $entity));
 
         if ($returnEntity) {
             return $entity;
@@ -90,18 +87,25 @@ Class Subscriber extends McAbstractMapper
             $this->batchSubscribe();
         }
 
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
+
         $params = array();
         $params["id"] = $listEntity->getId();
         $params["emailAddress"] = $entity->getEmailAddress();
         $params["mergeVars"] = $entity->getMergeVars();
         $params["emailType"] = $entity->getEmailType();
-
         $params["doubleOptin"] = $this->getConfig('doubleOptin', 'subscribe');
         $params["updateExisting"] = $this->getConfig('updateExisting', 'subscribe');
         $params["replaceInterests"] = $this->getConfig('replaceInterests', 'subscribe');
         $params["sendWelcome"] = $this->getConfig('sendWelcome', 'subscribe');
 
-        return $this->callServer("listSubscribe", $params);
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('entity' => $entity));
+
+        if ($this->getMapper()->callServer("listSubscribe", $params) ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -117,16 +121,21 @@ Class Subscriber extends McAbstractMapper
             $this->batchSubscribe();
         }
 
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
+
         $params = array();
         $params["id"] = $listEntity->getId();
         $params["batch"] = $entity->getBatch();
-
         $params["doubleOptin"] = $this->getConfig('doubleOptin', 'subscribe');
         $params["updateExisting"] = $this->getConfig('updateExisting', 'subscribe');
         $params["replaceInterests"] = $this->getConfig('replaceInterests', 'subscribe');
         $params["sendWelcome"] = $this->getConfig('sendWelcome', 'subscribe');
 
-        return $this->callServer("listSubscribe", $params);
+        if ($this->getMapper()->callServer("listSubscribe", $params) ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -142,6 +151,8 @@ Class Subscriber extends McAbstractMapper
             $this->batchSubscribe();
         }
 
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
+
         $params = array();
         $params["id"] = $listEntity->getId();
         $params["email_address"] = $entity->getEmailAddress();
@@ -149,25 +160,11 @@ Class Subscriber extends McAbstractMapper
         $params["send_goodbye"] = $this->getConfig('sendGoodbye', 'unsubscribe');
         $params["send_notify"] = $this->getConfig('sendNotify', 'unsubscribe');
 
-        return $this->callServer("listUnsubscribe", $params);
-    }
+        if ($this->getMapper()->callServer("listUnsubscribe", $params) ) {
+            return true;
+        }
 
-    /**
-     * @return array|bool|mixed
-     */
-    public function update()
-    {
-        $entity = $this->getSubscriberEntity();
-        $listEntity = $this->getMailingListEntity();
-
-        $params = array();
-        $params["id"] = $id;
-        $params["email_address"] = $entity->getEmailAddress();;
-        $params["merge_vars"] = $entity->getMergeVars();;
-        $params["email_type"] = $entity->getEmailType();;
-        $params["replace_interests"] = $this->getConfig('replaceInterests', 'update');
-
-        return $this->callServer("listUpdateMember", $params);
+        return false;
     }
 
     /**
@@ -261,85 +258,28 @@ Class Subscriber extends McAbstractMapper
         return $this;
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     */
-    function remap($data)
+    public function setMailingListEntity($mailingListEntity)
     {
-        $array_map = $this->arrayMap;
+        $this->mailingListEntity = $mailingListEntity;
 
-        foreach ($data as $key=>$value) {
-            if (in_array($key, $array_map)) {
-                $data[$key] = $value;
-            }
-        }
-
-        return $data;
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    function getMailingListEntity()
+    public function getMailingListEntity()
     {
         return $this->mailingListEntity;
     }
 
-    /**
-     * @param $entity
-     * @return $this
-     */
-    function setMailingListEntity($entity)
+    public function setSubscriberEntity($subscriberEntity)
     {
-        $this->mailingListEntity = $entity;
+        $this->subscriberEntity = $subscriberEntity;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    function getSubscriberEntity()
+    public function getSubscriberEntity()
     {
         return $this->subscriberEntity;
     }
 
-    /**
-     * @param $entity
-     * @return $this
-     */
-    function setSubscriberEntity($entity)
-    {
-        $this->subscriberEntity = $entity;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    function getDefaults()
-    {
-        return $this->defaults;
-    }
-
-    /**
-     * @param $defaults
-     * @return $this
-     */
-    function setDefaults($defaults)
-    {
-        parent::setDefaults($defaults);
-        return $this;
-    }
-
-    /**
-     * @param $values
-     * @return $this
-     */
-    function setConfig($values)
-    {
-        parent::setConfig($values);
-        return $this;
-    }
 
 }

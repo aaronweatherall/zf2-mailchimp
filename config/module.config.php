@@ -5,43 +5,20 @@ return array(
             'Mailchimp\Controller\Mailchimp' => 'Mailchimp\Controller\MailchimpController'
         ),
     ),
-    'router' => array(
-        'routes' => array(
-            'mailchimp' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/mailchimp[/:action][/]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Mailchimp\Controller\Mailchimp',
-                        'action'     => 'index',
-                    ),
-                ),
-            )
-        ),
-    ),
     'service_manager' => array(
         'invokables' => array(
-            'Mailchimp\Mapper\Subscriber' => 'Mailchimp\Mapper\Subscriber',
+            'Mailchimp\Mapper\Mailchimp' => 'Mailchimp\Mapper\Mailchimp',
             'Mailchimp\Entity\Subscriber' => 'Mailchimp\Entity\Subscriber',
-            'Mailchimp\Entity\Lists' => 'Mailchimp\Entity\Lists',
+            'Mailchimp\Entity\MailingList' => 'Mailchimp\Entity\MailingList',
+            'Mailchimp\Service\Subscriber' => 'Mailchimp\Service\Subscriber',
         ),
         'factories' => array(
-            'subscriber' => function ($sm) {
-                $mapper = new Mailchimp\Mapper\Subscriber;
-                $mapper->setSubscriberEntity(new Mailchimp\Entity\Subscriber());
-                $mapper->setMailingListEntity(new Mailchimp\Entity\MailingList());
-                $mapper->setDefaults($sm->get('get_config'));
-                $mapper->setHydrator(new Zend\Stdlib\Hydrator\ClassMethods);
-
-                return $mapper;
-            },
-            'get_config' => function ($sm) {
+            'MailchimpMapper' => 'Mailchimp\Service\MailchimpMapperServiceFactory',
+            'MailchimpConfig' => function ($sm) {
                 $config = $sm->get('Config');
                 return $config['mailchimp'];
             },
+            'subscriber' => 'Mailchimp\Service\SubscriberServiceFactory',
         ),
     ),
     'view_manager' => array(
