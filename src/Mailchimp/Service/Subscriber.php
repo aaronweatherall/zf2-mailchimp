@@ -26,7 +26,7 @@ class Subscriber extends McAbstractService {
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
 
         $params = array();
-        $params["id"] = $id;
+        $params["id"] = $listEntity->getId();
         $params["email_address"] = $entity->getEmailAddress();;
         $params["merge_vars"] = $entity->getMergeVars();;
         $params["email_type"] = $entity->getEmailType();;
@@ -84,12 +84,10 @@ class Subscriber extends McAbstractService {
         $batch = $entity->getBatch();
 
         if (! empty($batch)) {
-            $this->batchSubscribe();
+            return $this->batchSubscribe();
         }
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
-
-        var_dump($this->getConfig('doubleOptin', 'subscribe'));
 
         $params = array();
         $params["id"] = $listEntity->getId();
@@ -117,11 +115,6 @@ class Subscriber extends McAbstractService {
     {
         $entity = $this->getSubscriberEntity();
         $listEntity = $this->getMailingListEntity();
-        $batch = $entity->getBatch();
-
-        if (! empty($batch)) {
-            $this->batchSubscribe();
-        }
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
 
@@ -133,7 +126,7 @@ class Subscriber extends McAbstractService {
         $params["replaceInterests"] = $this->getConfig('replaceInterests', 'subscribe');
         $params["sendWelcome"] = $this->getConfig('sendWelcome', 'subscribe');
 
-        if ($this->getMapper()->callServer("listSubscribe", $params) ) {
+        if ($this->getMapper()->callServer("listBatchSubscribe", $params) ) {
             return true;
         }
 
@@ -150,7 +143,7 @@ class Subscriber extends McAbstractService {
         $batch = $entity->getBatch();
 
         if (! empty($batch)) {
-            $this->batchSubscribe();
+            return $this->batchUnsubscribe();
         }
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
@@ -163,6 +156,30 @@ class Subscriber extends McAbstractService {
         $params["send_notify"] = $this->getConfig('sendNotify', 'unsubscribe');
 
         if ($this->getMapper()->callServer("listUnsubscribe", $params) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array|bool|mixed
+     */
+    public function batchUnsubscribe()
+    {
+        $entity = $this->getSubscriberEntity();
+        $listEntity = $this->getMailingListEntity();
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('mailList' => $listEntity, 'subscriber'=> $entity));
+
+        $params = array();
+        $params["id"] = $listEntity->getId();
+        $params["emails"] = $entity->getBatch();
+        $params["delete_member"] = $this->getConfig('deleteMember', 'unsubscribe');
+        $params["send_goodbye"] = $this->getConfig('sendGoodbye', 'unsubscribe');
+        $params["send_notify"] = $this->getConfig('sendNotify', 'unsubscribe');
+
+        if ($this->getMapper()->callServer("listBatchUnsubscribe", $params) ) {
             return true;
         }
 
@@ -222,7 +239,7 @@ class Subscriber extends McAbstractService {
     public function mergeVars($mergeVars = array())
     {
         $entity = $this->getSubscriberEntity();
-        $this->setMergeVars($mergeVars);
+        $entity->setMergeVars($mergeVars);
         return $this;
     }
 
@@ -246,7 +263,7 @@ class Subscriber extends McAbstractService {
     public function batch($batchVars = array())
     {
         $entity = $this->getSubscriberEntity();
-        $this->setBatch($batchVars);
+        $entity->setBatch($batchVars);
         return $this;
     }
 

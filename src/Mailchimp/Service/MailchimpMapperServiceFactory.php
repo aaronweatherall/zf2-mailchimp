@@ -4,6 +4,7 @@ namespace Mailchimp\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\Hydrator\ClassMethods as Hydrator;
 
 /**
  * Simple authentication provider factory
@@ -19,7 +20,7 @@ class MailchimpMapperServiceFactory implements FactoryInterface
     {
         $mapper = $serviceLocator->get('Mailchimp\Mapper\Mailchimp') ;
         $mapper->setDefaults($serviceLocator->get('MailchimpConfig'));
-        $mapper->setHydrator($serviceLocator->get('Zend\Stdlib\Hydrator\ClassMethods'));
+        $mapper->setHydrator(new Hydrator);
 
         return $mapper;
     }

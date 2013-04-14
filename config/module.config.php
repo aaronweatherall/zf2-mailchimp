@@ -11,6 +11,7 @@ return array(
             'Mailchimp\Entity\Subscriber' => 'Mailchimp\Entity\Subscriber',
             'Mailchimp\Entity\MailingList' => 'Mailchimp\Entity\MailingList',
             'Mailchimp\Service\Subscriber' => 'Mailchimp\Service\Subscriber',
+            'Zend\Stdlib\Hydrator\ClassMethods' => 'Zend\Stdlib\Hydrator\ClassMethods'
         ),
         'factories' => array(
             'MailchimpMapper' => 'Mailchimp\Service\MailchimpMapperServiceFactory',
