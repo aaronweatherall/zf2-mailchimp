@@ -9,13 +9,13 @@ At the moment, this is loosely based on https://github.com/waynhall/CodeIgniter-
 Updates
 -------
 12/04/2013 - Major overhaul of service/mapper architecture.
+14/04/2013 - Rewrote the submit mechanism and cleaned up subscriber service.
 
 Contributing
 ------------
 If you want to see this module move along faster, please feel free to pick a section, start coding and submit pull requests!
 I'm interested in contributions for
 - Unit Tests
-- Rewriting the actual submit mechanism
 - Add other sections not yet completed
 - Code improvements (I'm still learning, so would appreciate feedback)
 
@@ -57,7 +57,7 @@ Subscribe (Bulk)
 ```php
 $mailchimp = $this->getServiceLocator()->get('subscriber');
 
-$subscribe->listId('12345')
+$mailchimp->listId('12345')
   ->batch(array(
     array('EMAIL'=>'me@here.com', 'EMAIL_TYPE'=>'html', 'FNAME'=>'Aaron'),
     array('EMAIL'=>'me2@here.com', 'EMAIL_TYPE'=>'html', 'FNAME'=>'Bill'),
@@ -83,11 +83,8 @@ Unsubscribe (Bulk)
 ```php
 $mailchimp = $this->getServiceLocator()->get('subscriber');
 
-$subscribe->listId('12345')
-  ->batch(array(
-    array('EMAIL'=>'me@here.com'),
-    array('EMAIL'=>'me2@here.com'),
-  ))
+$subscribe->listId('29bc73c393')
+  ->batch(array('me@here.com', 'me2@here.com'))
   ->unsubscribe();
 ```
 
@@ -97,7 +94,7 @@ Update (Single)
 ```php
 $mailchimp = $this->getServiceLocator()->get('subscriber');
 
-$subscribe->listId('12345')
+$mailchimp->listId('12345')
   ->email('me@here.com')
   ->mergeVars(array(
     array('FNAME'=>'Aaron'),
@@ -111,7 +108,7 @@ Update (Bulk)
 ```php
 $mailchimp = $this->getServiceLocator()->get('subscriber');
 
-$subscribe->listId('12345')
+$mailchimp->listId('12345')
   ->batch(array(
     array('EMAIL'=>'me@here.com', 'FNAME'=>'Aaron'),
     array('EMAIL'=>'me2@here.com', 'FNAME'=>'Billy'),
