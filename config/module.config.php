@@ -1,8 +1,8 @@
 <?php
 return array(
     'controllers' => array(
-        'invokables' => array(
-            'Mailchimp\Controller\Mailchimp' => 'Mailchimp\Controller\MailchimpController'
+        'factories' => array(
+            'mailchimp' => 'Mailchimp\Controller\MailchimpControllerFactory'
         ),
     ),
     'service_manager' => array(
@@ -11,6 +11,7 @@ return array(
             'Mailchimp\Entity\Subscriber' => 'Mailchimp\Entity\Subscriber',
             'Mailchimp\Entity\MailingList' => 'Mailchimp\Entity\MailingList',
             'Mailchimp\Service\Subscriber' => 'Mailchimp\Service\Subscriber',
+            'Mailchimp\Form\SubscriptionForm' => 'Mailchimp\Form\SubscriptionForm',
             'Zend\Stdlib\Hydrator\ClassMethods' => 'Zend\Stdlib\Hydrator\ClassMethods'
         ),
         'factories' => array(
@@ -25,6 +26,33 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'mailchimp' => __DIR__ . '/../view',
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'mailchimp-subscribe' => array(
+                'type'      => 'Literal',
+                'options'   => array(
+                    'route'    => '/subscribe',
+                    'defaults' => array(
+                        'controller' => 'mailchimp',
+                        'action'     => 'subscribe',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'thank-you' => array(
+                        'type'      => 'Literal',
+                        'options'   => array(
+                            'route'    => '/thank-you',
+                            'defaults' => array(
+                                'controller' => 'mailchimp',
+                                'action'     => 'thank-you',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
 );
