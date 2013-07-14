@@ -54,10 +54,10 @@ class Subscriber extends McAbstractService {
         $params["id"] = $listEntity->getId();
         $params["emailAddress"] = $entity->getEmailAddress();
 
-        $data = $this->getMapper()->callServer("listMemberInfo", $params);
+        $data = unserialize($this->getMapper()->callServer("listMemberInfo", $params));
         $cleanData = $this->remap($data['data'][0]);
 
-        $hydrator = $this->$this->getMapper()->getHydrator();
+        $hydrator = $this->getMapper()->getHydrator();
 
         if (! is_object($cleanData)) {
             $entity = $hydrator->hydrate($cleanData, $this->getSubscriberEntity());
