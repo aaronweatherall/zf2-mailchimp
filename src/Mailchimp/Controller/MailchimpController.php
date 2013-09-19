@@ -2,7 +2,7 @@
 
 namespace Mailchimp\Controller;
 
-use Mailchimp\Form;
+use Mailchimp\Form\SubscriptionForm;
 use Mailchimp\Service\Subscriber;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -15,7 +15,7 @@ class MailchimpController extends AbstractActionController
     protected $subscriber;
 
     /**
-     * @var Form\SubscriptionForm
+     * @var SubscriptionForm
      */
     protected $subscriptionForm;
 
@@ -23,33 +23,6 @@ class MailchimpController extends AbstractActionController
      * @var string
      */
     protected $listId;
-
-    /**
-     * @param Subscriber $subscriber
-     */
-    public function __construct(Subscriber $subscriber)
-    {
-        $this->subscriber = $subscriber;
-    }
-
-    /**
-     * @param  Form\SubscriptionForm $form
-     * @return MailchimpController
-     */
-    public function setSubscriptionForm(Form\SubscriptionForm $form)
-    {
-        $this->subscriptionForm = $form;
-
-        return $this;
-    }
-
-    /**
-     * @return Form\SubscriptionForm
-     */
-    public function getSubscriptionForm()
-    {
-        return $this->subscriptionForm;
-    }
 
     /**
      * @return ViewModel
@@ -89,6 +62,49 @@ class MailchimpController extends AbstractActionController
         $viewModel->setTemplate('mailchimp/thank-you');
 
         return $viewModel;
+    }
+
+    /**
+     * @return Subscriber
+     */
+    public function getSubscriber()
+    {
+        if (!$this->subscriber) {
+            $this->subscriber = $this->getServiceLocator()->get('Mailchimp\Entity\Subscriber');
+        }
+
+        return $this->subscriber;
+    }
+
+    /**
+     * @param Subscriber $subscriber
+     */
+    public function setSubscriber(Subscriber $subscriber)
+    {
+        $this->subscriber = $subscriber;
+    }
+
+    /**
+     * @return SubscriptionForm
+     */
+    public function getSubscriptionForm()
+    {
+        if (!$this->subscriptionForm) {
+            $this->subscriptionForm = $this->getServiceLocator()->get('Mailchimp\Form\SubscriptionForm');
+        }
+
+        return $this->subscriptionForm;
+    }
+
+    /**
+     * @param  SubscriptionForm $form
+     * @return MailchimpController
+     */
+    public function setSubscriptionForm(SubscriptionForm $form)
+    {
+        $this->subscriptionForm = $form;
+
+        return $this;
     }
 
     /**

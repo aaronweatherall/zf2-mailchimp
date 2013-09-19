@@ -1,8 +1,8 @@
 <?php
 return array(
     'controllers' => array(
-        'factories' => array(
-            'Mailchimp\Controller\MailchimpController' => 'Mailchimp\Controller\MailchimpControllerFactory'
+        'invokables' => array(
+            'Mailchimp\Controller\MailchimpController' => 'Mailchimp\Controller\MailchimpController'
         ),
         'aliases' => array(
             'mailchimp' => 'Mailchimp\Controller\MailchimpController',
