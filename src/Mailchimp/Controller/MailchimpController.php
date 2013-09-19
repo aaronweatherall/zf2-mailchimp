@@ -103,7 +103,7 @@ class MailchimpController extends AbstractActionController
     public function getListId()
     {
         if (!$this->listId) {
-            $moduleConfig = $this->getSeviceLocator()->get('MailchimpConfig');
+            $moduleConfig = $this->getServiceLocator()->get('MailchimpConfig');
             $this->listId = $moduleConfig['listId'];
         }
 
