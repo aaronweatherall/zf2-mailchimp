@@ -26,6 +26,11 @@ class MailchimpController extends AbstractActionController
     protected $subscriptionForm;
 
     /**
+     * @var string
+     */
+    protected $listId;
+
+    /**
      * @param Subscriber $subscriber
      */
     public function __construct(Subscriber $subscriber)
@@ -68,7 +73,7 @@ class MailchimpController extends AbstractActionController
             if ($form->isValid()){
                 $data = $form->getData();
                 $this->subscriber->email($data['email'])
-                    ->listId($this->params('listId')) // TODO find a better way to pass the listID
+                    ->listId($this->getListId())
                     ->mergeVars(array(array(
                         'FNAME' => $data['firstName'],
                         'LNAME' => $data['lastName'],
@@ -90,5 +95,29 @@ class MailchimpController extends AbstractActionController
         $viewModel->setTemplate('mailchimp/thank-you');
 
         return $viewModel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getListId()
+    {
+        if (!$this->listId) {
+            $moduleConfig = $this->getSeviceLocator()->get('MailchimpConfig');
+            $this->listId = $moduleConfig['listId'];
+        }
+
+        return $this->listId;
+    }
+
+    /**
+     * @param string $listId
+     * @return $this
+     */
+    public function setListId($listId)
+    {
+        $this->listId = $listId;
+
+        return $this;
     }
 }
