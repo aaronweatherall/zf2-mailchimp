@@ -70,7 +70,7 @@ class MailchimpController extends AbstractActionController
     public function getSubscriber()
     {
         if (!$this->subscriber) {
-            $this->subscriber = $this->getServiceLocator()->get('Mailchimp\Entity\Subscriber');
+            $this->subscriber = $this->getServiceLocator()->get('Mailchimp\Service\Subscriber');
         }
 
         return $this->subscriber;
