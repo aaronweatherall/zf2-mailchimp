@@ -17,7 +17,7 @@ class SubscriberServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = $serviceLocator->get('Mailchimp\Service\Subscriber');
+        $service = new Subscriber();
         $service->setMapper($serviceLocator->get('MailchimpMapper'));
         $service->setSubscriberEntity($serviceLocator->get('Mailchimp\Entity\Subscriber'));
         $service->setMailingListEntity($serviceLocator->get('Mailchimp\Entity\MailingList'));

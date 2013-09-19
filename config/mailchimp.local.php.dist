@@ -4,6 +4,7 @@ return array(
     'mailchimp' => array(
         'general' => array(
             'apiKey' => '',
+            'listId' => '',
             'apiVersion' => '1.3',
             'timeout' => 300,
             'chunkSize' => 8192,
@@ -21,6 +22,6 @@ return array(
             'deleteMember'=>false,
             'sendGoodbye'=>true,
             'sendNotify'=>true,
-        )
+        ),
     )
 );
