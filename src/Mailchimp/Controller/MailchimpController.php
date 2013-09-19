@@ -97,7 +97,7 @@ class MailchimpController extends AbstractActionController
     }
 
     /**
-     * @param  SubscriptionForm $form
+     * @param  SubscriptionForm    $form
      * @return MailchimpController
      */
     public function setSubscriptionForm(SubscriptionForm $form)
