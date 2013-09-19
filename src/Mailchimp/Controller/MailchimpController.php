@@ -39,7 +39,7 @@ class MailchimpController extends AbstractActionController
     }
 
     /**
-     * @param Form\SubscriptionForm $form
+     * @param  Form\SubscriptionForm $form
      * @return MailchimpController
      */
     public function setSubscriptionForm(Form\SubscriptionForm $form)
@@ -70,7 +70,7 @@ class MailchimpController extends AbstractActionController
         if ($this->request->isPost()) {
             $form->setData($this->request->getPost());
 
-            if ($form->isValid()){
+            if ($form->isValid()) {
                 $data = $form->getData();
                 $this->subscriber->email($data['email'])
                     ->listId($this->getListId())

@@ -17,7 +17,7 @@ class MailchimpControllerFactory implements FactoryInterface
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $controllerManager
+     * @param  ServiceLocatorInterface $controllerManager
      * @return MailchimpController
      */
     public function createService(ServiceLocatorInterface $controllerManager)
