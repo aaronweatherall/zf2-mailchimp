@@ -2,7 +2,10 @@
 return array(
     'controllers' => array(
         'factories' => array(
-            'mailchimp' => 'Mailchimp\Controller\MailchimpControllerFactory'
+            'Mailchimp\Controller\MailchimpController' => 'Mailchimp\Controller\MailchimpControllerFactory'
+        ),
+        'aliases' => array(
+            'mailchimp' => 'Mailchimp\Controller\MailchimpController',
         ),
     ),
     'service_manager' => array(
