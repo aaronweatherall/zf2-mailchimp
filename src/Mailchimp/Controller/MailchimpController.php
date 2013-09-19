@@ -32,14 +32,14 @@ class MailchimpController extends AbstractActionController
         $viewModel = new ViewModel();
         $viewModel->setTemplate('mailchimp/subscribe');
 
-        $form = $this->subscriptionForm;
+        $form = $this->getSubscriptionForm();
 
         if ($this->request->isPost()) {
             $form->setData($this->request->getPost());
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->subscriber->email($data['email'])
+                $this->getSubscriber()->email($data['email'])
                     ->listId($this->getListId())
                     ->mergeVars(array(array(
                         'FNAME' => $data['firstName'],
