@@ -15,10 +15,7 @@ return array(
         ),
         'factories' => array(
             'MailchimpMapper' => 'Mailchimp\Service\MailchimpMapperServiceFactory',
-            'MailchimpConfig' => function ($sm) {
-                $config = $sm->get('Config');
-                return $config['mailchimp'];
-            },
+            'MailchimpConfig' =>'Mailchimp\Service\MailchimpConfigFactory',
             'subscriber' => 'Mailchimp\Service\SubscriberServiceFactory',
         ),
     ),
