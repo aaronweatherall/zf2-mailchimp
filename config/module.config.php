@@ -21,7 +21,6 @@ return array(
             'Mailchimp\Service\Subscriber' => 'Mailchimp\Service\SubscriberServiceFactory',
             'MailchimpMapper' => 'Mailchimp\Service\MailchimpMapperServiceFactory',
             'MailchimpConfig' =>'Mailchimp\Service\MailchimpConfigFactory',
-            'subscriber' => 'Mailchimp\Service\SubscriberServiceFactory',
         ),
         'aliases' => array(
             'subscriber' => 'Mailchimp\Service\Subscriber',
